@@ -3,16 +3,15 @@
 'use client';
 
 import * as stylex from '@stylexjs/stylex';
-import {spacingVars} from '@xds/core/theme/tokens.stylex';
 import {Text} from '@xds/core/Text';
 import {Link} from '@xds/core/Link';
 import {Button} from '@xds/core/Button';
 import {HStack, VStack} from '@xds/core/Layout';
 import {Grid, GridSpan} from '@xds/core/Grid';
-import {Card} from '@xds/core/Card';
+import {Divider} from '@xds/core/Divider';
 import {Section} from '@xds/core/Section';
 import {useAppShellMobile} from '@xds/core/AppShell';
-import {GITHUB_REPO, GITHUB_PAGES} from '../constants';
+import {GITHUB_REPO} from '../constants';
 import {
   AstryxLogo,
   GitHubLogo,
@@ -22,9 +21,8 @@ import {
 } from './logos';
 
 const styles = stylex.create({
-  footerLinks: {
-    width: '100%',
-    paddingInline: spacingVars['--spacing-2'],
+  mobileFooterLinks: {
+    maxWidth: 320,
   },
   logo: {
     height: 18,
@@ -48,7 +46,6 @@ const styles = stylex.create({
 const FOOTER_LINKS: ReadonlyArray<{
   label: string;
   href: string;
-  isExternal?: boolean;
 }> = [
   {label: 'Docs', href: '/docs'},
   {label: 'Changelog', href: '/changelog'},
@@ -58,7 +55,6 @@ const FOOTER_LINKS: ReadonlyArray<{
   {label: 'Templates', href: '/templates'},
   {label: 'Themes', href: '/themes'},
   {label: 'Playground', href: '/playground'},
-  {label: 'GitHub Pages', href: GITHUB_PAGES, isExternal: true},
 ];
 
 const SOCIAL_LINKS: ReadonlyArray<{
@@ -85,8 +81,7 @@ function NavLinks() {
           href={item.href}
           type="supporting"
           color="secondary"
-          isStandalone
-          target={item.isExternal ? '_blank' : undefined}>
+          isStandalone>
           {item.label}
         </Link>
       ))}
@@ -163,11 +158,16 @@ export function SiteFooter() {
     // On narrow viewports the horizontal rows can't fit side by side, so we
     // stack the three regions vertically and let the link lists wrap.
     return (
-      <Section role="contentinfo" padding={4}>
-        <VStack gap={4}>
-          <VStack gap={3} hAlign="start" xstyle={styles.footerLinks}>
+      <Section role="contentinfo" padding={6}>
+        <VStack gap={6}>
+          <VStack gap={6} hAlign="center">
             {astryxLogo}
-            <HStack gap={4} wrap="wrap" align="center">
+            <HStack
+              gap={3}
+              wrap="wrap"
+              hAlign="center"
+              align="center"
+              xstyle={styles.mobileFooterLinks}>
               <NavLinks />
             </HStack>
             <HStack gap={2} wrap="wrap" align="center">
@@ -175,26 +175,26 @@ export function SiteFooter() {
             </HStack>
           </VStack>
 
-          <Card variant="muted">
-            <VStack gap={3} hAlign="start">
-              {metaOpenSourceLink}
-              <VStack gap={2} hAlign="start">
-                <LegalLinks />
-              </VStack>
-              <Text type="supporting" color="secondary">
-                {copyright}
-              </Text>
-            </VStack>
-          </Card>
+          <Divider />
+
+          <VStack gap={2} hAlign="center">
+            {metaOpenSourceLink}
+            <HStack gap={4} hAlign="start" xstyle={styles.mobileFooterLinks}>
+              <LegalLinks />
+            </HStack>
+            <Text type="supporting" color="secondary">
+              {copyright}
+            </Text>
+          </VStack>
         </VStack>
       </Section>
     );
   }
 
   return (
-    <Section role="contentinfo" padding={4}>
-      <VStack gap={3}>
-        <Grid columns={5} xstyle={styles.footerLinks} align="center">
+    <Section role="contentinfo" padding={6}>
+      <VStack gap={4}>
+        <Grid columns={5} align="center">
           {astryxLogo}
           <GridSpan columns={3}>
             <HStack gap={4} wrap="wrap" align="center" hAlign="center">
@@ -206,24 +206,24 @@ export function SiteFooter() {
           </HStack>
         </Grid>
 
-        <Card variant="muted" padding={3}>
-          <Grid columns={4} align="center">
-            {metaOpenSourceLink}
-            <GridSpan columns={2}>
-              <HStack
-                gap={4}
-                wrap="wrap"
-                align="center"
-                hAlign="center"
-                width="100%">
-                <LegalLinks />
-              </HStack>
-            </GridSpan>
-            <Text type="supporting" color="secondary" justify="end">
-              {copyright}
-            </Text>
-          </Grid>
-        </Card>
+        <Divider />
+
+        <Grid columns={4} align="center">
+          {metaOpenSourceLink}
+          <GridSpan columns={2}>
+            <HStack
+              gap={4}
+              wrap="wrap"
+              align="center"
+              hAlign="center"
+              width="100%">
+              <LegalLinks />
+            </HStack>
+          </GridSpan>
+          <Text type="supporting" color="secondary" justify="end">
+            {copyright}
+          </Text>
+        </Grid>
       </VStack>
     </Section>
   );
