@@ -67,6 +67,12 @@ export interface ContextRenderProps {
   placement?: LayerPlacement;
   alignment?: LayerAlignment;
   /**
+   * ARIA role applied to the popover container (e.g. `'tooltip'`). Lets
+   * consumers complete the ARIA pattern and gives test tooling a stable,
+   * non-hashed selector for the layer.
+   */
+  role?: string;
+  /**
    * StyleX styles for the popover container.
    */
   xstyle?: StyleXStyles;
@@ -378,6 +384,7 @@ export function useLayer(
       const {
         placement = 'above',
         alignment = 'center',
+        role,
         xstyle,
         className: extraClassName,
         style: extraStyle,
@@ -403,6 +410,7 @@ export function useLayer(
         <Container
           ref={popoverRefCallback}
           id={id}
+          role={role}
           popover={lightDismiss ? 'auto' : 'manual'}
           className={combinedClassName}
           style={{...stylexResult.style, ...anchorStyle, ...extraStyle}}>
