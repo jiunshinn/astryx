@@ -17,11 +17,30 @@
 
 import {useCallback, useEffect, useRef} from 'react';
 
+import {FOCUSABLE_SELECTOR} from './focusableSelector';
+
 /**
- * Selector for commonly focusable elements.
+ * Whether an element is currently perceivable/focusable — excludes ones hidden
+ * via `display:none`/`visibility:hidden` or inside an `inert`/`hidden` subtree,
+ * which the browser skips for Tab.
  */
-const FOCUSABLE_SELECTOR =
-  'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"]):not([disabled])';
+function isVisiblyFocusable(el: HTMLElement): boolean {
+  if (el.hasAttribute('inert') || el.closest('[inert]')) {
+    return false;
+  }
+  if (el.hidden || el.closest('[hidden]')) {
+    return false;
+  }
+  // offsetParent is null for display:none (and fixed elements); pair with a
+  // visibility check via getComputedStyle when available.
+  if (typeof window !== 'undefined' && window.getComputedStyle) {
+    const style = window.getComputedStyle(el);
+    if (style.visibility === 'hidden' || style.display === 'none') {
+      return false;
+    }
+  }
+  return true;
+}
 
 /**
  * Get all focusable elements within a container.
@@ -29,7 +48,7 @@ const FOCUSABLE_SELECTOR =
 function getFocusableElements(container: HTMLElement): HTMLElement[] {
   return Array.from(
     container.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR),
-  );
+  ).filter(isVisiblyFocusable);
 }
 
 /**
