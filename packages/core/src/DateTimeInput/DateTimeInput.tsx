@@ -297,6 +297,13 @@ export interface DateTimeInputProps extends Omit<
   timePlaceholder?: string;
 
   /**
+   * Accessible label for the time portion of the field. Defaults to
+   * `"{label} time"` so it is tied to the field's own label and localizable,
+   * rather than a hardcoded English "Time".
+   */
+  timeLabel?: string;
+
+  /**
    * The size of the inputs.
    * @default 'md'
    */
@@ -399,6 +406,7 @@ export function DateTimeInput({
   hasClear = false,
   placeholder = 'Select a date',
   timePlaceholder = 'Select a time',
+  timeLabel,
   size: sizeProp,
   status,
   labelTooltip,
@@ -923,7 +931,7 @@ export function DateTimeInput({
             onKeyDown={handleTimeKeyDown}
             placeholder={resolvedTimePlaceholder}
             disabled={isEffectivelyDisabled}
-            aria-label="Time"
+            aria-label={timeLabel ?? `${label} time`}
             aria-required={isRequired === true ? 'true' : undefined}
             aria-invalid={
               status?.type === 'error' || !isTimeInputValid ? 'true' : undefined
