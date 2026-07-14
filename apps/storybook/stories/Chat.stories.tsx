@@ -54,9 +54,7 @@ For **server state**, use a library like **TanStack Query** or **SWR** — they 
 
 Avoid global state managers unless you have a genuine need for cross-cutting state. Most apps are over-engineered in this area.`}</Markdown>
           <ChatMessageMetadata
-            timestamp={
-              <Timestamp value="2026-03-15T14:30:30" format="time" />
-            }
+            timestamp={<Timestamp value="2026-03-15T14:30:30" format="time" />}
             footer={
               <>
                 <span>Claude Opus 4.6</span>
@@ -130,9 +128,7 @@ const [state, dispatch] = useReducer(reducer, initialState);`}
 | \`useSyncExternalStore\` | External stores | On snapshot change | High | Redux, Zustand, signals |
 | \`useRef\` | Mutable values | Never | Low | DOM refs, timers, previous values |`}</Markdown>
           <ChatMessageMetadata
-            timestamp={
-              <Timestamp value="2026-03-15T14:31:30" format="time" />
-            }
+            timestamp={<Timestamp value="2026-03-15T14:31:30" format="time" />}
             footer={
               <>
                 <span>Claude Opus 4.6</span>
@@ -425,8 +421,7 @@ export const GapOverride: StoryObj = {
           </ChatMessageBubble>
         </ChatMessage>
         <ChatMessage sender="assistant">
-          <ChatMessageBubble
-            metadata={<ChatMessageMetadata footer="Done" />}>
+          <ChatMessageBubble metadata={<ChatMessageMetadata footer="Done" />}>
             The patch is ready for review.
           </ChatMessageBubble>
         </ChatMessage>
@@ -439,9 +434,7 @@ export const SystemMessages: StoryObj = {
   render: () => (
     <div style={{height: 400, display: 'flex', flexDirection: 'column'}}>
       <ChatMessageList>
-        <ChatSystemMessage variant="divider">
-          March 15, 2026
-        </ChatSystemMessage>
+        <ChatSystemMessage variant="divider">March 15, 2026</ChatSystemMessage>
         <ChatMessage
           sender="assistant"
           avatar={<Avatar name="Navi" size="small" />}>
@@ -469,8 +462,7 @@ export const MessageStatus: StoryObj = {
           </ChatMessageBubble>
         </ChatMessage>
         <ChatMessage sender="user">
-          <ChatMessageBubble
-            metadata={<ChatMessageMetadata status="sent" />}>
+          <ChatMessageBubble metadata={<ChatMessageMetadata status="sent" />}>
             Sent
           </ChatMessageBubble>
         </ChatMessage>
@@ -481,14 +473,12 @@ export const MessageStatus: StoryObj = {
           </ChatMessageBubble>
         </ChatMessage>
         <ChatMessage sender="user">
-          <ChatMessageBubble
-            metadata={<ChatMessageMetadata status="read" />}>
+          <ChatMessageBubble metadata={<ChatMessageMetadata status="read" />}>
             Read
           </ChatMessageBubble>
         </ChatMessage>
         <ChatMessage sender="user">
-          <ChatMessageBubble
-            metadata={<ChatMessageMetadata status="error" />}>
+          <ChatMessageBubble metadata={<ChatMessageMetadata status="error" />}>
             Failed to send
           </ChatMessageBubble>
         </ChatMessage>
@@ -559,4 +549,62 @@ export const MultiBubble: StoryObj = {
       </ChatMessageList>
     </div>
   ),
+};
+export const Alignment: StoryObj = {
+  name: 'Alignment',
+  render: () => {
+    const shortConversation = (align: 'top' | 'bottom') => (
+      <div
+        style={{
+          flex: 1,
+          minWidth: 0,
+          display: 'flex',
+          flexDirection: 'column',
+          border: '1px solid var(--color-border-primary)',
+          borderRadius: 8,
+          overflow: 'hidden',
+        }}>
+        <div
+          style={{
+            padding: '8px 12px',
+            borderBottom: '1px solid var(--color-border-primary)',
+            fontSize: 12,
+            fontWeight: 600,
+            textTransform: 'uppercase',
+            letterSpacing: '0.05em',
+          }}>
+          align=&quot;{align}&quot;
+        </div>
+        <div
+          style={{
+            flex: 1,
+            display: 'flex',
+            flexDirection: 'column',
+            minHeight: 0,
+          }}>
+          <ChatMessageList align={align}>
+            <ChatMessage sender="user">
+              <ChatMessageBubble>Just one short message.</ChatMessageBubble>
+            </ChatMessage>
+            <ChatMessage
+              sender="assistant"
+              avatar={<Avatar name="Navi" size="small" />}>
+              <ChatMessageBubble>
+                {align === 'top'
+                  ? 'Top alignment keeps messages at the top — good for logs and document-style lists.'
+                  : 'Bottom alignment keeps a short thread just above the composer — the familiar messaging layout.'}
+              </ChatMessageBubble>
+            </ChatMessage>
+          </ChatMessageList>
+        </div>
+      </div>
+    );
+
+    return (
+      <div style={{display: 'flex', gap: 16, height: 420}}>
+        {shortConversation('bottom')}
+        {shortConversation('top')}
+      </div>
+    );
+  },
 };
