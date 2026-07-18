@@ -168,6 +168,7 @@ export function ChatMessage({
   style: styleProp,
   'data-testid': testId,
   ref,
+  ...rest
 }: ChatMessageProps) {
   const t = useTranslator();
   const listContext = useChatListContext();
@@ -218,6 +219,7 @@ export function ChatMessage({
   return (
     <ChatMessageContext value={contextValue}>
       <article
+        {...rest}
         ref={ref}
         data-testid={testId}
         aria-label={!hasName ? t('@astryx.chatMessage.messageFrom', {sender}) : undefined}
